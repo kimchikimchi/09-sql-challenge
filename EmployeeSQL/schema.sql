@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS department;
 -- Also note dependant tables need to be created first
 -- before creating tables references PKs in those dependant tables. 
 CREATE TABLE "title" (
-    "title_id" int   NOT NULL PRIMARY KEY,
+    "title_id" varchar   NOT NULL PRIMARY KEY,
     "name" varchar   NOT NULL
 );
 
@@ -21,7 +21,7 @@ CREATE TABLE "department" (
 
 CREATE TABLE "employee" (
     "emp_id" int   NOT NULL PRIMARY KEY,
-    "title_id" int   NOT NULL,
+    "title_id" varchar   NOT NULL,
     "birthday_date" varchar   NOT NULL,
     "first_name" varchar   NOT NULL,
     "last_name" varchar   NOT NULL,
@@ -31,8 +31,8 @@ CREATE TABLE "employee" (
 );
 
 CREATE TABLE "salary" (
-    "amount" int   NOT NULL,
     "emp_id" int   NOT NULL,
+    "amount" int   NOT NULL,
     FOREIGN KEY (emp_id) REFERENCES employee(emp_id)
 );
 
