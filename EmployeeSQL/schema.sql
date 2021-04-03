@@ -22,11 +22,11 @@ CREATE TABLE "department" (
 CREATE TABLE "employee" (
     "emp_id" int   NOT NULL PRIMARY KEY,
     "title_id" varchar   NOT NULL,
-    "birthday_date" varchar   NOT NULL,
+    "birthday_date" date   NOT NULL,
     "first_name" varchar   NOT NULL,
     "last_name" varchar   NOT NULL,
     "sex" char(1)   NOT NULL,
-    "hire_date" varchar   NOT NULL,
+    "hire_date" date   NOT NULL,
     FOREIGN KEY (title_id) REFERENCES title(title_id)
 );
 
