@@ -1,66 +1,54 @@
-﻿-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
--- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
+﻿-- Delete order depends on foregin key dependencies
+DROP TABLE IF EXISTS dept_manager;
+DROP TABLE IF EXISTS dept_emp;
+DROP TABLE IF EXISTS salary;
+DROP TABLE IF EXISTS employee;
+DROP TABLE IF EXISTS title;
+DROP TABLE IF EXISTS department;
 
+-- Table Creation
+-- Also note dependant tables need to be created first
+-- before creating tables references PKs in those dependant tables. 
+CREATE TABLE "title" (
+    "title_id" int   NOT NULL PRIMARY KEY,
+    "name" varchar   NOT NULL
+);
 
 CREATE TABLE "department" (
-    "dept_id" varchar   NOT NULL,
-    "dept_name" varchar   NOT NULL,
-    CONSTRAINT "pk_department" PRIMARY KEY (
-        "dept_id"
-     )
-);
-
-CREATE TABLE "dept_emp" (
-    "emp_id" int   NOT NULL,
-    "dept_id" int   NOT NULL
-);
-
-CREATE TABLE "dept_manager" (
-    "dept_id" int   NOT NULL,
-    "emp_id" int   NOT NULL
+    "dept_id" varchar   NOT NULL PRIMARY KEY,
+    "dept_name" varchar   NOT NULL
 );
 
 CREATE TABLE "employee" (
-    "emp_id" int   NOT NULL,
+    "emp_id" int   NOT NULL PRIMARY KEY,
     "title_id" int   NOT NULL,
     "birthday_date" varchar   NOT NULL,
     "first_name" varchar   NOT NULL,
     "last_name" varchar   NOT NULL,
     "sex" char(1)   NOT NULL,
     "hire_date" varchar   NOT NULL,
-    CONSTRAINT "pk_employee" PRIMARY KEY (
-        "emp_id"
-     )
+    FOREIGN KEY (title_id) REFERENCES title(title_id)
 );
 
 CREATE TABLE "salary" (
-    "amount" int,   NOT NULL,
-    "emp_id" int   NOT NULL
+    "amount" int   NOT NULL,
+    "emp_id" int   NOT NULL,
+    FOREIGN KEY (emp_id) REFERENCES employee(emp_id)
 );
 
-CREATE TABLE "title" (
-    "title_id" int   NOT NULL,
-    "name" varchar   NOT NULL,
-    CONSTRAINT "pk_title" PRIMARY KEY (
-        "title_id"
-     )
+CREATE TABLE "dept_emp" (
+    "emp_id" int   NOT NULL,
+    "dept_id" varchar   NOT NULL,
+    PRIMARY KEY (emp_id, dept_id),
+    FOREIGN KEY (emp_id) REFERENCES employee(emp_id),
+    FOREIGN KEY (dept_id) REFERENCES department(dept_id)
+ );
+
+CREATE TABLE "dept_manager" (
+    "dept_id" varchar   NOT NULL,
+    "emp_id" int   NOT NULL,
+    PRIMARY KEY (dept_id, emp_id),
+    FOREIGN KEY (dept_id) REFERENCES department(dept_id),
+    FOREIGN KEY (emp_id) REFERENCES employee(emp_id)
 );
-
-ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_emp_id" FOREIGN KEY("emp_id")
-REFERENCES "employee" ("emp_id");
-
-ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_dept_id" FOREIGN KEY("dept_id")
-REFERENCES "department" ("dept_id");
-
-ALTER TABLE "dept_manager" ADD CONSTRAINT "fk_dept_manager_dept_id" FOREIGN KEY("dept_id")
-REFERENCES "department" ("dept_id");
-
-ALTER TABLE "dept_manager" ADD CONSTRAINT "fk_dept_manager_emp_id" FOREIGN KEY("emp_id")
-REFERENCES "employee" ("emp_id");
-
-ALTER TABLE "employee" ADD CONSTRAINT "fk_employee_title_id" FOREIGN KEY("title_id")
-REFERENCES "title" ("title_id");
-
-ALTER TABLE "salary" ADD CONSTRAINT "fk_salary_emp_id" FOREIGN KEY("emp_id")
-REFERENCES "employee" ("emp_id");
 
